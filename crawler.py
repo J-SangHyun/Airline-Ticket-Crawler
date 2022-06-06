@@ -4,11 +4,12 @@ from constant import city2code
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
 BASE_URL = 'https://flight.naver.com/flights/international/'
-DETAILED_URL = BASE_URL + '%s-%s-%d/%s-%s-%d?adult=1&isDirect=true&fareType=Y&selectType=concurrent'
+DETAILED_URL = BASE_URL + '%s-%s-%s/%s-%s-%s?adult=1&isDirect=true&fareType=Y&selectType=concurrent'
 
 
 def get_url(port1, port2, date1, date2):
@@ -58,10 +59,10 @@ def get_minimum_price(driver, city1, city2, date1, date2, airline):
 
 
 if __name__ == '__main__':
-    CHROME_DRIVER = webdriver.Chrome(ChromeDriverManager().install())
-    #price = get_minimum_price(CHROME_DRIVER, '서울', '도쿄', 20220801, 20220822, '아시아나항공')
+    CHROME_DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    price = get_minimum_price(CHROME_DRIVER, '서울', '오사카', '20220801', '20220822', '아시아나항공')
     #price = get_minimum_price(CHROME_DRIVER, '서울', '도쿄', 20220801, 20220822, '대한항공')
     #price = get_minimum_price(CHROME_DRIVER, '서울', '도쿄', 20220622, 20220623, '대한항공')
-    price = get_minimum_price(CHROME_DRIVER, '서울', '도쿄', 20220801, 20220822, '필리핀항공')
+    #price = get_minimum_price(CHROME_DRIVER, '서울', '도쿄', 20220801, 20220822, '필리핀항공')
     CHROME_DRIVER.quit()
     print(price)
