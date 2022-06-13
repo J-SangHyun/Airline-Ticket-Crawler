@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import tkinter as tk
 import tkinter.ttk as ttk
-from tqdm import tqdm
 from datetime import date, timedelta
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
