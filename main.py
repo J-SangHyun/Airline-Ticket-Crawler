@@ -96,20 +96,27 @@ if __name__ == '__main__':
                     period = 6 if (city in cityEurope or city in cityAmerica) else 3
                     date1 = date_start + timedelta(days=k)
                     date2 = date1 + timedelta(days=period)
-                    prices = get_price(CHROME, city, date1.strftime("%m-%d"), date2.strftime("%m-%d"), airline_list)
-                    sheet.cell(column=2, row=cell_row, value=f'{int(date1.strftime("%Y"))}년 '
-                                                             f'{int(date1.strftime("%m"))}월 '
-                                                             f'{int(date1.strftime("%d"))}일 '
-                                                             f'{day_list[int(date1.strftime("%w"))]}요일')
-                    for l in range(len(airline_list)):
-                        cell_column = 3 + i * len(airline_list) + l
-                        price = prices[l]
-                        if price != -1:
-                            sheet.cell(column=cell_column, row=cell_row, value=prices[l])
-                    workbook.save(f'{today.strftime("%Y%m%d")}.xlsx')
-                    cell_row += 1
-                    progress['value'] += 1
-                    progress.update()
+                    for trial in range(10):
+                        try:
+                            prices = get_price(CHROME, city, date1.strftime("%m-%d"), date2.strftime("%m-%d"),
+                                               airline_list)
+                        except:
+                            continue
+                        finally:
+                            sheet.cell(column=2, row=cell_row, value=f'{int(date1.strftime("%Y"))}년 '
+                                                                     f'{int(date1.strftime("%m"))}월 '
+                                                                     f'{int(date1.strftime("%d"))}일 '
+                                                                     f'{day_list[int(date1.strftime("%w"))]}요일')
+                            for l in range(len(airline_list)):
+                                cell_column = 3 + i * len(airline_list) + l
+                                price = prices[l]
+                                if price != -1:
+                                    sheet.cell(column=cell_column, row=cell_row, value=prices[l])
+                            workbook.save(f'{today.strftime("%Y%m%d")}.xlsx')
+                            cell_row += 1
+                            progress['value'] += 1
+                            progress.update()
+                            break
         workbook.save(f'{today.strftime("%Y%m%d")}.xlsx')
         CHROME.quit()
         main.quit()
