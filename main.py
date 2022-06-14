@@ -13,7 +13,6 @@ from constant import city2code, cityEurope, cityAmerica
 if __name__ == '__main__':
     main = tk.Tk()
     main.title('Airline Ticket Crawler')
-    main.geometry('640x420')
     main.resizable(False, False)
 
     day_list = ['일', '월', '화', '수', '목', '금', '토']
@@ -34,6 +33,8 @@ if __name__ == '__main__':
                     for i in range(len(cities))]
     for i in range(len(city_buttons)):
         city_buttons[i].place(x=200, y=20*i+10)
+
+    main.geometry(f'640x{20 + max(len(cities), len(total_airline_list)) * 20}')
 
     n_dates = 8
     dates_from = [tk.Entry(main, width=9) for _ in range(n_dates)]
