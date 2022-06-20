@@ -42,7 +42,8 @@ XPATH_CLOSE_AIRLINE = '/html/body/c-wiz[2]/div/div[2]/c-wiz/div/c-wiz/c-wiz/div[
 XPATH_SORT = '//button[contains(., "정렬기준:")]'
 XPATH_SORT_PRICE = '//li[contains(., "요금")]'
 XPATH_LIST = '/html/body/c-wiz[2]/div/div[2]/c-wiz/div/c-wiz/c-wiz/div[2]/div[2]/ul'
-DELAY = 0.4
+XPATH_PRICE = '/html/body/c-wiz[2]/div/div[2]/c-wiz/div/c-wiz/div/div[2]/div[2]/div[2]/div/div/div[2]/div/div[2]/span'
+DELAY = 0.5
 
 
 def get_price(driver, origin_city, city, date1, date2, airlines):
@@ -117,6 +118,7 @@ def get_price(driver, origin_city, city, date1, date2, airlines):
         driver.find_element(By.XPATH, XPATH_CLOSE_DIRECT).click()
         while driver.find_element(By.CLASS_NAME, 'Jwkq3b').get_attribute('class') != 'Jwkq3b':
             time.sleep(DELAY)
+        time.sleep(DELAY)
 
         # sort
         if not driver.find_elements(By.XPATH, XPATH_LIST):
@@ -124,8 +126,7 @@ def get_price(driver, origin_city, city, date1, date2, airlines):
         driver.find_element(By.XPATH, XPATH_SORT).click()
         time.sleep(DELAY)
         driver.find_element(By.XPATH, XPATH_SORT_PRICE).click()
-        while driver.find_element(By.CLASS_NAME, 'Jwkq3b').get_attribute('class') != 'Jwkq3b':
-            time.sleep(DELAY)
+        time.sleep(4 * DELAY)
 
         # choose airline
         for i in range(len(airlines)):
@@ -137,9 +138,7 @@ def get_price(driver, origin_city, city, date1, date2, airlines):
             driver.find_element(By.XPATH, f'//button[@data-value="{airline}"]').click()
             time.sleep(DELAY)
             driver.find_element(By.XPATH, XPATH_CLOSE_AIRLINE).click()
-
-            while driver.find_element(By.CLASS_NAME, 'Jwkq3b').get_attribute('class') != 'Jwkq3b':
-                time.sleep(DELAY)
+            time.sleep(4 * DELAY)
 
             # get tickets
             if not driver.find_elements(By.XPATH, XPATH_LIST):
@@ -151,18 +150,53 @@ def get_price(driver, origin_city, city, date1, date2, airlines):
                 #airline_name = name_module.find_elements(By.TAG_NAME, 'span')[0].text
                 #if '다구간 항공권' in airline_name:
                 #    airline_name = name_module.find_elements(By.TAG_NAME, 'span')[-1].text
-                price_module = ticket.find_element(By.CLASS_NAME, 'U3gSDe')
-                ticket_price = int(price_module.find_element(By.TAG_NAME, 'span').
-                                   text.replace('₩', '').replace(',', ''))
-                current_prices[i] = ticket_price
+                #if airline != airline_name:
+                #    continue
+                ticket.click()
+                time.sleep(3 * DELAY)
                 break
+
+            # get dest tickets
+            if not driver.find_elements(By.XPATH, XPATH_LIST):
+                continue
+            dest_ticket_list = driver.find_element(By.XPATH, XPATH_LIST)
+            dest_tickets = dest_ticket_list.find_elements(By.CLASS_NAME, 'JjMzFd')
+            for ticket in dest_tickets:
+                #name_module = ticket.find_element(By.CLASS_NAME, 'TQqf0e')
+                #airline_name = name_module.find_elements(By.TAG_NAME, 'span')[0].text
+                #if '다구간 항공권' in airline_name:
+                #    airline_name = name_module.find_elements(By.TAG_NAME, 'span')[-1].text
+                #if airline != airline_name:
+                #    continue
+                ticket.click()
+                time.sleep(3 * DELAY)
+                break
+
+            while driver.find_element(By.CLASS_NAME, 'Jwkq3b').get_attribute('class') != 'Jwkq3b s2h5lc':
+                time.sleep(DELAY)
+            time.sleep(DELAY)
+
+            for _ in range(10):
+                try:
+                    ticket_price_text = driver.find_element(By.XPATH, XPATH_PRICE).text
+                    ticket_price = int(ticket_price_text.replace('₩', '').replace(',', ''))
+                    current_prices[i] = ticket_price
+                except:
+                    time.sleep(DELAY)
+                    continue
+                finally:
+                    break
+            driver.back()
+            driver.back()
+            time.sleep(2 * DELAY)
+
         print(origin_city, city, date1, date2, current_prices)
         return current_prices
 
 
 if __name__ == '__main__':
     CHROME_DRIVER = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    price = get_price(CHROME_DRIVER, '서울특별시', '싱가포르', '07-14', '07-17', ['대한항공', '아시아나', '제주항공', '진에어', '티웨이항공'])
+    price = get_price(CHROME_DRIVER, '서울특별시', '도쿄', '06-24', '06-27', ['대한항공', '아시아나'])
     #price = get_minimum_price(CHROME_DRIVER, '서울', '도쿄', 20220801, 20220822, ['대한항공'])
     #price = get_minimum_price(CHROME_DRIVER, '서울', '도쿄', 20220622, 20220623, ['대한항공'])
     #price = get_minimum_price(CHROME_DRIVER, '서울', '도쿄', 20220801, 20220822, ['필리핀항공'])
