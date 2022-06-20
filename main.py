@@ -122,7 +122,7 @@ if __name__ == '__main__':
                         price = prices[l]
                         if price != -1:
                             sheet.cell(column=cell_column, row=cell_row, value=prices[l])
-                    workbook.save(f'{today.strftime("%Y%m%d")}.xlsx')
+                    workbook.save(file_name)
                     cell_row += 1
                     progress['value'] += 1
                     progress.update()
