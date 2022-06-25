@@ -9,7 +9,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
-BASE_URL = 'https://www.google.com/travel/flights'
+BASE_URL = 'https://www.google.com/travel/flights/en?hl=kr&gl=KR&curr=KRW'
 XPATH_ORIGIN = '/html/body/c-wiz[2]/div/div[2]/c-wiz/div/c-wiz/c-wiz/div[2]/div[1]/div[1]/div[1]/' \
                'div/div[2]/div[1]/div[1]/div/div/div[1]/div/div/input'
 XPATH_ORIGIN2 = '/html/body/c-wiz[2]/div/div[2]/c-wiz/div/c-wiz/c-wiz/div[2]/div[1]/div[1]/div[1]/' \
