@@ -146,12 +146,12 @@ def get_price(driver, origin_city, city, date1, date2, airlines):
             ticket_list = driver.find_element(By.XPATH, XPATH_LIST)
             tickets = ticket_list.find_elements(By.CLASS_NAME, 'JjMzFd')
             for ticket in tickets:
-                #name_module = ticket.find_element(By.CLASS_NAME, 'TQqf0e')
-                #airline_name = name_module.find_elements(By.TAG_NAME, 'span')[0].text
-                #if '다구간 항공권' in airline_name:
-                #    airline_name = name_module.find_elements(By.TAG_NAME, 'span')[-1].text
-                #if airline != airline_name:
-                #    continue
+                name_module = ticket.find_element(By.CLASS_NAME, 'TQqf0e')
+                airline_name = name_module.find_elements(By.TAG_NAME, 'span')[0].text
+                if '다구간 항공권' in airline_name:
+                    airline_name = name_module.find_elements(By.TAG_NAME, 'span')[-1].text
+                if airline != airline_name:
+                    continue
                 ticket.click()
                 time.sleep(3 * DELAY)
                 break
@@ -162,12 +162,12 @@ def get_price(driver, origin_city, city, date1, date2, airlines):
             dest_ticket_list = driver.find_element(By.XPATH, XPATH_LIST)
             dest_tickets = dest_ticket_list.find_elements(By.CLASS_NAME, 'JjMzFd')
             for ticket in dest_tickets:
-                #name_module = ticket.find_element(By.CLASS_NAME, 'TQqf0e')
-                #airline_name = name_module.find_elements(By.TAG_NAME, 'span')[0].text
-                #if '다구간 항공권' in airline_name:
-                #    airline_name = name_module.find_elements(By.TAG_NAME, 'span')[-1].text
-                #if airline != airline_name:
-                #    continue
+                name_module = ticket.find_element(By.CLASS_NAME, 'TQqf0e')
+                airline_name = name_module.find_elements(By.TAG_NAME, 'span')[0].text
+                if '다구간 항공권' in airline_name:
+                    airline_name = name_module.find_elements(By.TAG_NAME, 'span')[-1].text
+                if airline != airline_name:
+                    continue
                 ticket.click()
                 time.sleep(3 * DELAY)
                 break
