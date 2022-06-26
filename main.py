@@ -17,14 +17,11 @@ if __name__ == '__main__':
 
     day_list = ['일', '월', '화', '수', '목', '금', '토']
     origin_list = [
-        ['인천-김포', '서울특별시'],
+        ['인천-김포', 'SEL'],
         ['인천', 'ICN'],
         ['김포', 'GMP']
     ]
-    total_airline_list = \
-        ['뉴질랜드항공', '대한항공', '델타항공', '방콕항공', '베트남항공', '싱가포르항공', '아시아나', '에어부산', '에어서울',
-         '유나이티드항공', '일본항공', '전일본공수', '제주항공', '중화항공', '진에어', '캐세이패시픽항공', '티웨이항공',
-         '필리핀항공', 'MIAT 몽골항공', 'THAI']
+    total_airline_list = ['대한항공', '아시아나항공', '에어부산', '에어서울', '제주항공', '진에어', '티웨이항공']
 
     origin_checked = tk.IntVar()
     origin_buttons = [tk.Radiobutton(main, text=origin_list[i][0], value=i, variable=origin_checked)
@@ -111,8 +108,8 @@ if __name__ == '__main__':
                     period = 6 if (city in cityEurope or city in cityAmerica) else 3
                     date1 = date_start + timedelta(days=k)
                     date2 = date1 + timedelta(days=period)
-                    prices = get_price(CHROME, origin_list[origin_idx][1], city, date1.strftime("%m-%d"),
-                                               date2.strftime("%m-%d"), airline_list)
+                    prices = get_price(CHROME, origin_list[origin_idx][1], city2code[city], date1.strftime("%Y-%m-%d"),
+                                       date2.strftime("%Y-%m-%d"), airline_list)
                     sheet.cell(column=2, row=cell_row, value=f'{int(date1.strftime("%Y"))}년 '
                                                              f'{int(date1.strftime("%m"))}월 '
                                                              f'{int(date1.strftime("%d"))}일 '
