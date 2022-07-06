@@ -38,7 +38,10 @@ def get_price(driver, origin_city, dest_city, date1, date2, airlines):
 
     # ad removal
     if driver.find_elements(By.XPATH, XPATH_OK):
-        driver.find_element(By.XPATH, XPATH_OK).click()
+        try:
+            driver.find_element(By.XPATH, XPATH_OK).click()
+        except:
+            pass
         time.sleep(DELAY)
 
     # only specific airline
